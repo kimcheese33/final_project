@@ -1,4 +1,20 @@
-# final_project
-Data analytics bootcamp final project
+# Segment 1
 
-test
+## Presentation
+
+### Topic
+
+
+### Data Source
+
+
+### Questions to Answer
+
+
+## Communication Protocols
+
+-- Slack
+
+-- Class breakout sessions
+
+-- Email
