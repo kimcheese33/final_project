@@ -1,0 +1,21 @@
+# DB prospective edits:
+
+### 2007-2016-Homelessnewss-USA.csv:
+
+Simplify date to year format “20XX”.
+
+Change state abbreviation to state name, ex: “AK” -> “ALASKA”.
+
+Join separate CoC program data into comprehensive state data, ex: “Alaska Balance of State CoC” + “Alaska Balance of State CoC” = “Alaska CoC”.
+
+Drop redundant/unnecessary “Measures” rows, ex:  keep only  “Total Homeless”, “Unsheltered Homeless”, “Sheltered Homeless”, “Chronically Homeless Individuals”.  
+
+### states_all.csv:
+
+Drop “PRIMARY_KEY" or create primary key for 2007-2016-Homelessnewss-USA.csv.
+
+Drop year rows that don’t intersect with 2007-2016-Homelessnewss-USA.csv (1992-2006).
+
+There are a lot of columns in the data set that will probably not be useful to our study, but I don’t want to drop them too early and limit the scope of our study. Will be best to decide with the group. Ex: do we need to have expenditure’s sub categories instructional/support/other or will having just the total expenditure suit our needs?
+
+Edit numeric values to be whole numbers--decimal point is unnecessary.
