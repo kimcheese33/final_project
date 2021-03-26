@@ -2,6 +2,15 @@
 
 ## Presentation
 
+### Separation of Duties
+
+
+|  Segment  |  Kim Horany  |  Roy Mojica  |  Lawrence Watson  |
+| --------- | ------------ | ------------ | ----------------- |
+|  1        | Presentation & Github | Machine Learning |   Database |
+|  2        | Machine Learning | Database |   Dashboard & Presentation |
+
+
 ### Topic
 
 - Topic: Predicting the severity of homelessness and how it correlates with education 
