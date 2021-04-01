@@ -38,6 +38,19 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 ### Segment 1
 
+#### Database Integration
+
+1. Produce sample data that mimics the expected final database structure or schema:
+
+   - ERD for sample database was completed with the integration of our two primary datasets in mind (DB_structure.png).
+   - Created tables to house the DBs with querries in postgreSQL11 and exported the tables (Decade_Homelessness.sql & Education_by_state.sql).
+   - Drafted a list of suggested edits to our datasets for the preprocessing phase (DB_prospective_edits).
+ 
+2. Confirm draft machine learning model is connected to the provisional database:
+
+   - Successfully connected provisional DB to the drafted model (ML_Model_Draft.ipynb) and took a picture of returned connection (database_connection.png).
+
+
 ### Segment 2
 
 #### Machine Learning 
