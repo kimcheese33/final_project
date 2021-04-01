@@ -1,5 +1,6 @@
 # #Database Password
 # db_password = 'YOUR_PASSWORD_HERE'
+# source: http://www.postgresqltutorial.com/postgresql-python/connect/
 
 from configparser import ConfigParser
  
