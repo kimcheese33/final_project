@@ -1,9 +1,7 @@
 # Final Project: Probing the Relationship Between Education and Homlessness in the USA
 Authors: Kim Horany, Roy Mojica, Lawrence Watson
 
-## Presentation
-
-### Separation of Duties
+## Separation of Duties
 
 
 |  Segment  |  Kim Horany  |  Roy Mojica  |  Lawrence Watson  |
@@ -12,24 +10,23 @@ Authors: Kim Horany, Roy Mojica, Lawrence Watson
 |  2        | Machine Learning | Database |   Dashboard & Presentation |
 
 
-### Summary
+## Summary
 
 - Topic: Predicting the severity of homelessness in the United states and how it correlates with education by examining relationship between the two in each state. 
 
 - Why topic was selected: We think it would be interesting to see if we could predict how severe the homeless situation will be based on existing homelessness data and data about education in that state. The hope is to collect data that will allow us to make accurate projections on the number of homeless in a State based on educational trends.
 
-### Data Source
+## Data Source
 
 We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2016_Homelessness_USA.csv, contains counts of homeless by state, Continuum of Care (CoC), and by severity of homelessness. The second dataset, state_all.csv, contains education data such as, counts of individuals by state, year, grade level, and math/reading scores.
 
-### Questions to Answer
+## Questions to Answer
 
 - What will the severity level of homelessness be next year?
 
 - How does education level affect homelessness?
 
 ## Communication Protocols
-
 
 - Slack
 
