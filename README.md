@@ -38,6 +38,8 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 ### Segment 1
 
+#### Machine Learning Model
+
 #### Database Integration
 
 1. Produce sample data that mimics the expected final database structure or schema:
@@ -53,7 +55,7 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 ### Segment 2
 
-#### Machine Learning 
+#### Machine Learning Model
 
 1. Description of preliminary data preprocessing:
 
@@ -119,3 +121,7 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
    - We chose a multivariate multiple regression model, because we had more than two independent variables, more than one dependent variable, and we wanted to predict a continuous value. The benefits of multivariate regression is that we can get a more realistic picture than when just observing one dependent variable. This technique can also provide a more powerful test of significance than typical multiple regression. A limitation of multivariate analysis  is that you need to have large datasets to overcome high standard errors. Our dataset may not be large enough to overcome this limitation.
    - To determine whether this model is a good fit, I got the R-squared score, which was 97.8%. This indicates a good fit. However, it may not be accurate, because our dataset might not be big enough to overcome the limitations of using a multivariate regression model. Despite this limitation we decided to use this statistic, because R-squared shows the fraction of the variance between values predicted and the value rather than the mean of the actual.
+
+#### Database Intergration
+
+#### Dashboard
