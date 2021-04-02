@@ -30,7 +30,7 @@ def df2postgres(engine, df):
     return con
 
 
-
+# Have Database store static data for use during the project
 if __name__ == '__main__':
 
     homeless_db = MyDB()
