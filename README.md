@@ -47,6 +47,10 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 #### Machine Learning Model
 
+1. Takes in data from the provisional database using the "ML_Model_Draft" file. Tested connection using "psycopg2 successfully with test postgres server created by Lawrence.
+
+2. Outputs counts we will use for "y" or label values for machine learning model.
+
 #### Database Integration
 
 1. Produce sample data that mimics the expected final database structure or schema:
@@ -130,6 +134,15 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
    - To determine whether this model is a good fit, I got the R-squared score, which was 97.8%. This indicates a good fit. However, it may not be accurate, because our dataset might not be big enough to overcome the limitations of using a multivariate regression model. Despite this limitation we decided to use this statistic, because R-squared shows the fraction of the variance between values predicted and the value rather than the mean of the actual.
 
 #### Database Intergration
+
+1. Database stores static data though the "db_creator.py" file by taking the CSV that were created from the data cleaning/processing file.
+
+2. Database interfaces with the project by connecting to the machine learning file using "psycopg2"
+   - Includes the tables for "homeless_processed" and "education_processed" CSVs.
+   - Created an INNER JOIN through Postgres and included the querey code in "querey.txt" file.
+   - Includes the SQLAlchemy connection string "db_creator.py"
+ 
+ 3. ERD is saved in the "homeless_erd.PNG" file.
 
 #### Dashboard
 
