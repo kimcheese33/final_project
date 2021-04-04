@@ -26,6 +26,13 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 - How does education level affect homelessness?
 
+## Presentation
+
+[Google Slides Presentation](https://docs.google.com/presentation/d/1qcjNdUe6113w7axp-y-amXODMnWzwdU2P95df5-UpWs/edit?usp=sharing)
+
+
+[Dashboard Link](https://public.tableau.com/profile/lawrence.watson#!/vizhome/EducationandHomlessnessintheUSA/Dashboard1?publish=yes)
+
 ## Communication Protocols
 
 - Slack
@@ -125,3 +132,20 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 #### Database Intergration
 
 #### Dashboard
+
+1. Dashboard created using Tableau Public.
+   - proccessed & joined data is exported to .csv format for connection to Tableau.
+      - Further manipulation of data required (calculated field may suffice) to collate state data into single column.
+
+2. Blueprint for vizualizations 
+   - Bubble Chart
+      - Values: Y - Total Expenditure (10 year period), X - Grades All (10 year period), Bubble - Total Homeless per State
+      - Description: Total homeless value as a percentage of State population is represented w/ dimensions of bubble labeled by State. Bubbles are plotted on a graph that shows how much money was spent on education and the aggregate k-12 grades. Will help identify which states are spending the most on education and whether or not it has an impact on the homeless population.
+    - Heat Maps
+         - Values: X -Years, Y - States, Heat Value - Total Homeless
+         - Description: A heat map to display the homeless population in each state for every year 2007-2016. If a state's homeless population is trending downward over time, it will be represented.
+    - Interactive Element
+         - Description: Map of the United States displaying where each state is colored with a heat value to represent either Homelessness, Educational Spending, or k-12 grade performance. A button will be used to select between the three values. A slider at the map's edge will be used to select the year 2006-2017.
+
+3. Tableau Story, minus vizualizations, integrated into Google Slides presentation.
+
