@@ -1,3 +1,16 @@
+.DS_Store
+.Rhistory
+
+# segment 1 files
+DB_Structure.png
+DB_Structure.sql
+DB_prospective_edits
+Decade_Homelessness.sql
+Education_by_state.sql
+database_connection.png
+homeless_erd.PNG
+mockup_db_table_export.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
