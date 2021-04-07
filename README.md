@@ -31,7 +31,7 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 [Google Slides Presentation](https://docs.google.com/presentation/d/1qcjNdUe6113w7axp-y-amXODMnWzwdU2P95df5-UpWs/edit?usp=sharing)
 
 
-[Dashboard Link](https://public.tableau.com/profile/lawrence.watson#!/vizhome/EducationandHomlessnessintheUSA/HomelessnessStory)
+[Dashboard Link](https://public.tableau.com/profile/lawrence.watson#!/vizhome/FinalProject-HomlessnessEducationintheUSA/HomelessnessEduDash?publish=yes)
 
 ## Communication Protocols
 
