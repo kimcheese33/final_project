@@ -126,13 +126,16 @@ To scale the data we used Standard Scaler from the sklearn library:
 
 Now that we have our data ready, it's finally time to put together the model. The model we chose to use is  Multivariate Regression Model, because we are wanting to predict homeless sheltered, unsheltered, and other counts for subsequent years. A Multivariate Regression will allow us to generate a continuous value for three dependent variables (sheltered, unsheltered, other) with more than one independent variable (state, year, total revenue, total expenditure, grades 9-12, and all grades). The benefit of using a Multivariate Regression is that we can get a more realistic picture than when just observing one dependent variable. This technique can also provide a more powerful test of significance than a typical multiple regression. A limitation of Multivariate analysis is that you need to have large datasets to overcome high standard errors. Our dataset may not be large enough to overcome this limitation.
 
-To determine whether this model is a good fit, we got the R-squared score, which was 97.8%. This indicates a good fit. However, it may not be accurate, because our dataset might not be big enough to overcome the limitations of using a Multivariate regression model. Despite this limitation we decided to use this statistic, because R-squared shows the fraction of the variance between values predicted and the value rather than the mean of the actual.
+Looking at the results shown in the print(y_pred) cell output, we can see that we get an array containing arrays that contain three counts for each category. The results are given in scientific notation. We can see that the counts are in the thousands and ten thousands, which is not unexpected; many of our actual counts in the data are also in the thousands and ten thousands. Thus, at first glance we can see that our model is on the right track and is returning what we expect.
+
+To determine whether this model is actually a good fit using a statistical measure, we got the R-squared score which was 97.8%. This indicates a good fit. However, it may not be accurate, because our dataset might not be big enough to overcome the limitations of using a Multivariate regression model. Despite this limitation we decided to use this statistic, because R-squared shows the fraction of the variance between values predicted and the value rather than the mean of the actual. 
 
 The code containing the machine learning model is located in the Machine Learning folder in a file called machine_learning.ipynb.
 
 Model With Results & R_Squared Output:
 
 <img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/model.png"/>
+
 
 ### Step 5: Build Visualizations
 
