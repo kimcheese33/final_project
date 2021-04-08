@@ -98,7 +98,7 @@ After we created our two tables, we knew that we wanted to join the data before 
 
 Join & Table Creation Statement (found in Database folder, querey.txt):
 
-
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/join.png"/>
 
 To integrate the data from our Postgres database, we imported psycopg2 then used the following code, which can also be found in the Machine Learning folder at the top of the machine_learning.ipynb file:
 
