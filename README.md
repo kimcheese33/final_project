@@ -132,7 +132,7 @@ Model With Results & R_Squared Output:
 
 <img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/model.png"/>
 
-### Step 4: Build Visualizations
+### Step 5: Build Visualizations
 
 The last step is to visualize the data and the results. We decided to build our visualizations with Tableau Public and publish the results to Tableau Public server (linked above). The visualizations are sourced from the processed_education.csv and processed_homeless.csv files (located at Machine Learning > Resources). The two data sources are then joined via an inner join on State_Year.
 
