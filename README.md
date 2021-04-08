@@ -96,21 +96,9 @@ Create Table Statement:
 
 After we created our two tables, we knew that we wanted to join the data before feeding it to the machine learning model. For the join, we performed an inner join on the primary key column, State_Year, which is available in both tables. We stored this data in a table: homeless_edu.
 
-Join & Table Creation Statement:
+Join & Table Creation Statement (found in Database folder, querey.txt):
 
-'''sql
---Inner JOIN for two tables
-SELECT *
-FROM "homeless"
-INNER JOIN "education" ON "homeless"."State_Year" = "education"."State_Year";
 
---Create table from JOIN
-CREATE TABLE homeless_edu AS
-SELECT "e"."State_Year", "e"."TOTAL_REVENUE", "e"."TOTAL_EXPENDITURE", "e"."GRADES_9_12_G", "e"."GRADES_ALL_G", 
-"h"."Year", "h"."State", "h"."Sheltered_Cnt", "h"."Unsheltered_Cnt", "h"."Other_Cnt"
-FROM education AS e
-INNER JOIN homeless AS h USING ("State_Year");
-'''
 
 To integrate the data from our Postgres database, we imported psycopg2 then used the following code, which can also be found in the Machine Learning folder at the top of the machine_learning.ipynb file:
 
