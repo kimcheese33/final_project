@@ -80,9 +80,11 @@ Description of preliminary data preprocessing:
 
 Cleaned Homeless Data:
 
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/cleaned_homeless.png"/>
 
 Cleaned Education Data:
-<pic>
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/cleaned_education.png"/>
 
 ### Step 2: Build Database & Integrate 
 
