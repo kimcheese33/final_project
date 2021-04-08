@@ -19,7 +19,7 @@ Authors: Kim Horany, Roy Mojica, Lawrence Watson
 
 ## Data Source
 
-We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2016_Homelessness_USA.csv, contains counts of homeless by state, Continuum of Care (CoC), and severity of homelessness. The second dataset, state_all.csv, contains education data such as, counts of individuals by state, year, grade level, and math/reading scores.
+We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2016_Homelessness_USA.csv, contains counts of homeless by state, Continuum of Care (CoC), and severity of homelessness. The second dataset, state_all.csv, contains education data such as, counts of individuals by state, year, grade level, and math/reading scores. Both raw datasets are stored here: Machine Learning > Resources > Raw
 
 ## Questions to Answer
 
@@ -36,38 +36,17 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 ## Process
 
-### Segment 1
+### Step 1: Data Exploration & Cleaning
 
-#### Machine Learning Model
+Before diving into describing the Machine Learning model and the database, let's go over how we got the data ready for consumption. The code to do this is stored in the Machine Learning folder: clean_data.ipynb, preprocess_data.ipynb.
 
-1. Takes in data from the provisional database using the "ML_Model_Draft" file. Tested connection using "psycopg2 successfully with test postgres server created by Lawrence.
-
-2. Outputs counts we will use for "y" or label values for machine learning model.
-
-#### Database Integration
-
-1. Produce sample data that mimics the expected final database structure or schema:
-
-   - ERD for sample database was completed with the integration of our two primary datasets in mind (DB_structure.png).
-   - Created tables to house the DBs with querries in postgreSQL11 and exported the tables (Decade_Homelessness.sql & Education_by_state.sql).
-   - Drafted a list of suggested edits to our datasets for the preprocessing phase (DB_prospective_edits).
- 
-2. Confirm draft machine learning model is connected to the provisional database:
-
-   - Successfully connected provisional DB to the drafted model (ML_Model_Draft.ipynb) and took a picture of returned connection (database_connection.png).
-
-
-### Segment 2
-
-#### Machine Learning Model
-
-1. Description of preliminary data preprocessing:
+Description of preliminary data preprocessing:
 
    - Homeless Dataset
 
      - Read raw data from CSV
 
-     - Drop unneeded columns – we decided that the shelter name was not relevant to the data
+     - Drop unneeded columns – we decided that the shelter name (CoC) was not relevant to the data
 
      - Create a key column that will allow us to join to the education dataset
 
@@ -75,21 +54,19 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
        - Concatenate year with state, ex: 2007_AK
 
-     - Create bins for the Measures column to reduce the categories to either Sheltered, Unsheltered, or Other
+     - Create bins for the Measures column to reduce the large number of categories to three: Sheltered, Unsheltered, or Other
 
-     - Drop original Measures column
+     - Drop original Measures column since it is no longer needed
 
-     - Group by State_Year, Year, State, Groups to aggregate the Count
+     - Flatten the data so that we have a count column for all three categories: Sheltered_Cnt, Unsheltered_Cnt, Other_Cnt
 
-     - Flatten the table so that each year/state will have one record
-
-       - Create 3 columns: Sheltered_Cnt, Unsheltered_Cnt, Other_Cnt and store count under appropriate column
+     - Group the data by State_Year, Year, State to aggregate the counts
 
    - Education dataset
 
      - Read raw data from CSV
 
-     - Drop unneeded columns - columns with too many null values
+     - Drop unneeded columns - by checking null counts on the columns, we discovered these columns contained too many nulls: ENROLL, OTHER_EXPENDITURE, AVG_MATH_4_SCORE, AVG_MATH_8_SCORE, AVG_READING_4_SCORE, AVG_READING_8_SCORE. In addition, we decided to drop STATE_REVENUE, LOCAL_REVENUE, INSTRUCTION_EXPENDITURE, SUPPORT_SERVICES_EXPENDITURE, CAPITAL_OUTLAY_EXPENDITURE, GRADES_PK_G, GRADES_KG_G, GRADES_4_G, and GRADES_8_G to simplify the model and focus just on high school grade counts.
 
      - Create a key column that will allow us to join to homeless dataset
 
@@ -97,51 +74,61 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
        - Concatenate year with state, ex: 2007_AK
 
-     - Replace NaN with zeros
+     - Replace remaining NaN values with zeros
 
      - Convert floats to int
 
-       - Merged dataset
+Cleaned Homeless Data:
+<pic>
 
-     - Join homeless dataset and education dataset on the key: state_year
+Cleaned Education Data:
+<pic>
 
-     - Drop duplicate columns
+### Step 2: Build Database & Integrate 
 
-     - Reorder columns so the count columns are at the end
+To house our data, we built a database in Postgres. We created two tables: one to house the cleaned homeless data and the other to house the cleaned education data.
 
-     - Encode State column with get_dummies
+Picture of ERD:
+<pic>
 
-     - Use Standard Scaler on the X features
+Picture of Create Table Statement:
+<pic>
 
-2. Description of preliminary feature engineering and preliminary feature selection, including their decision making process:
+After we created our two tables, we knew that we wanted to join the data before feeding it to the machine learning model. For the join, we performed an inner join on the primary key column, State_Year, which is available in both tables. We stored this data in a table: homeless_edu.
 
-   - Preliminary feature engineering includes reducing the 20+ Measures categories to just 3 categories, scaling the features using Standard Scaler, and encoding the categorical column (State) using get_dummies. We chose the features to be the state, year, total state revenue, total state expenditure, number of students in high school, and number of students in all grades to be the features. We wanted to see if this combination of columns could be used to accurately predict homeless counts for subsequent years.
+Picture of Join Statement:
+<pic>
 
-3. Description of how data was split into training and testing sets:
+To integrate the data from our Postgres database, we imported psycopg2 then used the following code, which can also be found in the Machine Learning folder at the top of the machine_learning.ipynb file:
+<connect_postgres.png>
 
-   - Data was split into training and testing sets using sklearn's train_test_split. We used the default split values.
+### Step 3: Feature Engineering & Splitting the Data
 
-4. Explanation of model choice, including limitations and benefits:
+Although the data has been cleaned, flattened, and merged, we still need to do a bit more preprocessing before it can be fed to the model. Preliminary feature engineering included reducing the 20+ Measures categories to just 3 categories as described above, encoding the categorical column (State) using get_dummies, and scaling the features using Standard Scaler. We chose the features for the model to be the State, Year, TOTAL_REVENUE, TOTAL_EXPENDITURE, GRADES_9_12_G, and GRADES_ALL_G columns to be the features. We wanted to see if this combination of columns could be used to accurately predict homeless counts for subsequent years. We also split the data into training and testing sets.
 
-   - We chose a multivariate multiple regression model, because we had more than two independent variables, more than one dependent variable, and we wanted to predict a continuous value. The benefits of multivariate regression is that we can get a more realistic picture than when just observing one dependent variable. This technique can also provide a more powerful test of significance than typical multiple regression. A limitation of multivariate analysis  is that you need to have large datasets to overcome high standard errors. Our dataset may not be large enough to overcome this limitation.
-   - To determine whether this model is a good fit, I got the R-squared score, which was 97.8%. This indicates a good fit. However, it may not be accurate, because our dataset might not be big enough to overcome the limitations of using a multivariate regression model. Despite this limitation we decided to use this statistic, because R-squared shows the fraction of the variance between values predicted and the value rather than the mean of the actual.
+To turn the categorical State column into a numerical value the model can use we used pd.get_dummies:
+<get_dummies.png>
 
-#### Database Intergration
+To split the data into training and testing sets we used sklearn's train_test_split. We used the default values to split the data (75% train, 25% test):
+<train_test_split.png>
 
-1. Database stores static data though the "db_creator.py" file by taking the CSV that were created from the data cleaning/processing file.
+To scale the data we used Standard Scaler from the sklearn library:
+<standard_scaler.png>
 
-2. Database interfaces with the project by connecting to the machine learning file using "psycopg2"
-   - Includes the tables for "homeless_processed" and "education_processed" CSVs.
-   - Created an INNER JOIN through Postgres and included the querey code in "querey.txt" file.
-   - Includes the SQLAlchemy connection string "db_creator.py"
- 
- 3. ERD is saved in the "homeless_erd.PNG" file.
+### Step 4: Machine Learning Model
 
-#### Dashboard
+Now that we have our data ready, it's finally time to put together the model. The model we chose to use a Multivariate Regression Model, because we are wanting to predict homeless sheltered, unsheltered, and other counts for subsequent years. A Multivariate Regression will allow us to generate a continuous value for three dependent variables (sheltered, unsheltered, other) with more than one independent variable (state, year, total revenue, total expenditure, grades 9-12, and all grades). The benefits of Multivariate Regression is that we can get a more realistic picture than when just observing one dependent variable. This technique can also provide a more powerful test of significance than typical multiple regression. A limitation of Multivariate analysis  is that you need to have large datasets to overcome high standard errors. Our dataset may not be large enough to overcome this limitation.
 
-1. Dashboard created using Tableau Public.
-   - proccessed & joined data is exported to .csv format for connection to Tableau.
-      - Further manipulation of data required (calculated field may suffice) to collate state data into single column.
+To determine whether this model is a good fit, we got the R-squared score, which was 97.8%. This indicates a good fit. However, it may not be accurate, because our dataset might not be big enough to overcome the limitations of using a Multivariate regression model. Despite this limitation we decided to use this statistic, because R-squared shows the fraction of the variance between values predicted and the value rather than the mean of the actual.
+
+The code containing the machine learning model is located in the Machine Learning folder in a file called machine_learning.ipynb.
+
+Model With Results & R_Squared Output:
+<model.png>
+
+### Step 4: Build Visualizations
+
+The last step is to visualize the data and the results. We decided to build our visualizations with Tableau Public and publish the results to Tableau Public server (linked above). The visualizations are sourced from the processed_education.csv and processed_homeless.csv files (located at Machine Learning > Resources). The two data sources are then joined via an inner join on State_Year.
 
 2. Blueprint for vizualizations 
    - Bubble Chart
