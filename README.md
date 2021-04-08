@@ -79,7 +79,7 @@ Description of preliminary data preprocessing:
      - Convert floats to int
 
 Cleaned Homeless Data:
-<pic>
+
 
 Cleaned Education Data:
 <pic>
@@ -88,32 +88,49 @@ Cleaned Education Data:
 
 To house our data, we built a database in Postgres. We created two tables: one to house the cleaned homeless data and the other to house the cleaned education data.
 
-Picture of ERD:
+ERD:
 <pic>
 
-Picture of Create Table Statement:
+Create Table Statement:
 <pic>
 
 After we created our two tables, we knew that we wanted to join the data before feeding it to the machine learning model. For the join, we performed an inner join on the primary key column, State_Year, which is available in both tables. We stored this data in a table: homeless_edu.
 
-Picture of Join Statement:
-<pic>
+Join & Table Creation Statement:
+
+'''sql
+--Inner JOIN for two tables
+SELECT *
+FROM "homeless"
+INNER JOIN "education" ON "homeless"."State_Year" = "education"."State_Year";
+
+--Create table from JOIN
+CREATE TABLE homeless_edu AS
+SELECT "e"."State_Year", "e"."TOTAL_REVENUE", "e"."TOTAL_EXPENDITURE", "e"."GRADES_9_12_G", "e"."GRADES_ALL_G", 
+"h"."Year", "h"."State", "h"."Sheltered_Cnt", "h"."Unsheltered_Cnt", "h"."Other_Cnt"
+FROM education AS e
+INNER JOIN homeless AS h USING ("State_Year");
+'''
 
 To integrate the data from our Postgres database, we imported psycopg2 then used the following code, which can also be found in the Machine Learning folder at the top of the machine_learning.ipynb file:
-<connect_postgres.png>
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/connect_postgres.png"/>
 
 ### Step 3: Feature Engineering & Splitting the Data
 
 Although the data has been cleaned, flattened, and merged, we still need to do a bit more preprocessing before it can be fed to the model. Preliminary feature engineering included reducing the 20+ Measures categories to just 3 categories as described above, encoding the categorical column (State) using get_dummies, and scaling the features using Standard Scaler. We chose the features for the model to be the State, Year, TOTAL_REVENUE, TOTAL_EXPENDITURE, GRADES_9_12_G, and GRADES_ALL_G columns to be the features. We wanted to see if this combination of columns could be used to accurately predict homeless counts for subsequent years. We also split the data into training and testing sets.
 
 To turn the categorical State column into a numerical value the model can use we used pd.get_dummies:
-<get_dummies.png>
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/get_dummies.png"/>
 
 To split the data into training and testing sets we used sklearn's train_test_split. We used the default values to split the data (75% train, 25% test):
-<train_test_split.png>
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/train_test_split.png"/>
 
 To scale the data we used Standard Scaler from the sklearn library:
-<standard_scaler.png>
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/standard_scaler.png"/>
 
 ### Step 4: Machine Learning Model
 
@@ -124,7 +141,8 @@ To determine whether this model is a good fit, we got the R-squared score, which
 The code containing the machine learning model is located in the Machine Learning folder in a file called machine_learning.ipynb.
 
 Model With Results & R_Squared Output:
-<model.png>
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/model.png"/>
 
 ### Step 4: Build Visualizations
 
