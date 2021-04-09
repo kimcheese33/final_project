@@ -13,9 +13,9 @@ Authors: Kim Horany, Roy Mojica, Lawrence Watson
 
 ## Summary
 
-- Topic: Predicting the severity of homelessness in the United states and how it correlates with education by examining relationship between the two in each state. 
+- Topic: Predicting the severity of homelessness in the United states and how it correlates with education by examining relationship between the two. 
 
-- Why topic was selected: The swift and unexpected onset of a global health crisis in 2020 led many states to issue stay-at-home orders to curtail the rate of infection.  Without homes to retreat to, our homeless population was most vulnerable during the pandemic. We may not be able to predict or control the next devastating public health crisis, but is there an aspect to homelessness that we might govern to reduce the size of those affected? That is what we hope to discover.  With the focus on education, an area in which there is plenty of data, we hope to discove a method to make accurate projections on the number of homeless in a State.
+- Why topic was selected: The swift and unexpected onset of a global health crisis in 2020 led many states to issue stay-at-home orders to curtail the rate of infection.  Without homes to retreat to, our homeless population was most vulnerable during the pandemic. We may not be able to predict or control the next devastating public health crisis, but is there an aspect to homelessness that we might govern to reduce the size of those affected? That is what we hope to discover.  With the focus on education, an area in which there is plenty of data, we hope to discove a method to make accurate projections on the number of homeless
 
 ## Data Source
 
