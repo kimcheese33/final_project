@@ -13,6 +13,7 @@ mockup_db_table_export.csv
 clean_data_old.ipynb
 machine_learning_old.ipynb
 preprocess_data_old.ipynb
+ML_Model_Draft.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
