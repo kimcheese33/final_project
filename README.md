@@ -116,7 +116,7 @@ Preliminary feature engineering included scaling the features using Standard Sca
 
 ### Step 5: Machine Learning Model
 
-Now that we have our data ready, it's finally time to put together the model. The model we chose to use is a Multiple Linear Regression Model. We chose this model, because we are wanting to predict the count of homeless people, a dependent variable, by looking at multiple independent variables. The advantages of using a linear regression is that it gives information about the relevance of features and is simple to implyement and interpret. The disadvantages are that linear regression can be susceptible to overfitting. However, this can be fixed by reducing dimensions, which we attempt below. 
+Now that we have our data ready, it's finally time to put together the model. The model we chose to use is a Multiple Linear Regression Model. We chose this model, because we are wanting to predict the count of homeless people, a dependent variable, by looking at multiple independent variables. The advantages of using a linear regression is that it gives information about the relevance of features and is simple to implement and interpret. The disadvantages are that linear regression can be susceptible to overfitting. However, this can be fixed by reducing dimensions, which we attempt below. 
 
 To determine how well the model is doing, we used four statistical measures: R Squared, Mean Absolute Error (MAE), Mean Squared Error (MSE), and Root Mean Squared Error (RSME). The R Squared value tells us goodness of fit; it measures the strength of the relationship between the model and the dependent variable. MAE tells us the absolute difference of the data and the model's predictions. The MSE is like the MAE except we are squaring the difference; this means that outliers will cause the error to grow quadratically instead of proportionally. Finally, the RMSE is the square root of MSE; taking the square root converts the metric back to similar units as the inputs. Outliers are still a big contributing factor to this error value.
 
@@ -169,3 +169,6 @@ The last step is to visualize the data and the results. We decided to build our 
 
 3. Tableau Story, minus vizualizations, integrated into Google Slides presentation.
 
+## Conclusion
+
+While we were able to build a model that could make predictions on what homeless counts would be, the accuracy of this model deinitely  has room for improvement. In addition, it looks like we were unable to determine whether education has a direct impact on homelessness level in the US. In future attempts we could try to get a larger dataset, get different variables related to education (SAT scores, graduation rates, etc.), and/or prune the data more to reduce missing data (NaN's replaced by zeroes). 
