@@ -8,7 +8,7 @@ Authors: Kim Horany, Roy Mojica, Lawrence Watson
 | --------- | ------------ | ------------ | ----------------- |
 |  1        | Presentation & Github | Machine Learning |   Database |
 |  2        | Machine Learning | Database |   Dashboard & Presentation |
-|  3        | Github | Presentation | Dashboard |
+|  3        | Github & Machine Learning | Presentation | Dashboard |
 
 
 ## Summary
@@ -23,7 +23,7 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 ## Questions to Answer
 
-- What will the severity level of homelessness be next year?
+- What will homelessness counts increase or decrease in future years?
 
 - How does education level affect homelessness?
 
@@ -46,7 +46,7 @@ Description of preliminary data preprocessing:
 
      - Read raw data from CSV
 
-     - Drop unneeded columns – we decided that the shelter name (CoC) was not relevant to the data
+     - Drop unneeded columns – we decided that the shelter name (CoC) and the Measures column was not relevant to the data
 
      - Create a key column that will allow us to join to the education dataset
 
@@ -54,19 +54,15 @@ Description of preliminary data preprocessing:
 
        - Concatenate year with state, ex: 2007_AK
 
-     - Create bins for the Measures column to reduce the large number of categories to three: Sheltered, Unsheltered, or Other
-
-     - Drop original Measures column since it is no longer needed
-
-     - Flatten the data so that we have a count column for all three categories: Sheltered_Cnt, Unsheltered_Cnt, Other_Cnt
-
      - Group the data by State_Year, Year, State to aggregate the counts
+
+     - Replace Nan values with 0
 
    - Education dataset
 
      - Read raw data from CSV
 
-     - Drop unneeded columns - by checking null counts on the columns, we discovered these columns contained too many nulls: ENROLL, OTHER_EXPENDITURE, AVG_MATH_4_SCORE, AVG_MATH_8_SCORE, AVG_READING_4_SCORE, AVG_READING_8_SCORE. In addition, we decided to drop STATE_REVENUE, LOCAL_REVENUE, INSTRUCTION_EXPENDITURE, SUPPORT_SERVICES_EXPENDITURE, CAPITAL_OUTLAY_EXPENDITURE, GRADES_PK_G, GRADES_KG_G, GRADES_4_G, and GRADES_8_G to simplify the model and focus just on high school grade counts.
+     - Drop unneeded columns - by checking null counts on the columns, we discovered these columns contained too many nulls: ENROLL, OTHER_EXPENDITURE, AVG_MATH_4_SCORE, AVG_MATH_8_SCORE, AVG_READING_4_SCORE, AVG_READING_8_SCORE. In addition, we decided to drop STATE_REVENUE, LOCAL_REVENUE, INSTRUCTION_EXPENDITURE, SUPPORT_SERVICES_EXPENDITURE, and CAPITAL_OUTLAY_EXPENDITURE to simplify the model and focus just on columns related to counts of students enrolled at school.
 
      - Create a key column that will allow us to join to homeless dataset
 
@@ -91,9 +87,7 @@ Cleaned Education Data:
 To house our data, we built a database in Postgres. We created two tables: one to house the cleaned homeless data and the other to house the cleaned education data.
 
 ERD:
-<pic>
 
-Create Table Statement:
 <pic>
 
 After we created our two tables, we knew that we wanted to join the data before feeding it to the machine learning model. For the join, we performed an inner join on the primary key column, State_Year, which is available in both tables. We stored this data in a table: homeless_edu.
@@ -102,42 +96,64 @@ Join & Table Creation Statement (found in Database folder, querey.txt):
 
 <img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/join.png"/>
 
-To integrate the data from our Postgres database, we imported psycopg2 then used the following code, which can also be found in the Machine Learning folder at the top of the machine_learning.ipynb file:
+To integrate the data from our Postgres database, we imported psycopg2 then used the following code, which can also be found in the Machine Learning folder at the top of the machine_learning_final.ipynb file:
 
 <img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/connect_postgres.png"/>
 
-### Step 3: Feature Engineering & Splitting the Data
+### Step 3: Data Exploration
 
-Although the data has been cleaned, flattened, and merged, we still need to do a bit more preprocessing before it can be fed to the model. Preliminary feature engineering included reducing the 20+ Measures categories to just 3 categories as described above, encoding the categorical column (State) using get_dummies, and scaling the features using Standard Scaler. We chose the features for the model to be the State, Year, TOTAL_REVENUE, TOTAL_EXPENDITURE, GRADES_9_12_G, and GRADES_ALL_G columns to be the features. We wanted to see if this combination of columns could be used to accurately predict homeless counts for subsequent years. We also split the data into training and testing sets. The code for this can be found in the Machine Learning folder in the machine_learning.ipynb file.
+In order to get a better idea of which features to include in our model, we first did a quick data exploration exercise. Due to the nature of our data and what we are hoping to achieve, we knew that we would be doing a linear regression. This means that we need to take a look at each variable and the relationship it has with Homeless_Count, our dependent variable. To do this, we used the Seaborn's pairplot to visualize the relationship. After looking at each variable, we can see that they all have a fairly weak relationship with Homeless_Count. However, it looks like TOTAL_EXPENDITURE and TOTAL_REVENUE have the best relationship. In Step 5, we will discuss how we came to our final model.
 
-To turn the categorical State column into a numerical value the model can use we used pd.get_dummies:
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/seaborn1.png"/>
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/get_dummies.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/seaborn2.png"/>
 
-To split the data into training and testing sets we used sklearn's train_test_split. We used the default values to split the data (75% train, 25% test):
+This code can be viewed in machine_learning_final.ipynb file in the Machine Learning folder.
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/train_test_split.png"/>
+### Step 4: Feature Engineering & Splitting the Data
 
-To scale the data we used Standard Scaler from the sklearn library:
+Preliminary feature engineering included scaling the features using Standard Scaler. We also chose to drop State as this is a categorical variable that should not be included in the model. We chose the features for the final model to be the Year, TOTAL_REVENUE, TOTAL_EXPENDITURE, GRADES_PK_G,GRADES_KG_G,GRADES_4_G,GRADES_8_G,GRADES_12_G,GRADES_1_8_G,GRADES_9_12_G,GRADES_ALL_G columns to be the features. We wanted to see if this combination of columns could be used to accurately predict homeless counts for subsequent years. We also split the data into training and testing sets using sklearn's train_test_split. The code for this can be found in the Machine Learning folder in the machine_learning_final.ipynb file.
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/standard_scaler.png"/>
+### Step 5: Machine Learning Model
 
-### Step 4: Machine Learning Model
+Now that we have our data ready, it's finally time to put together the model. The model we chose to use is a Multiple Linear Regression Model. We chose this model, because we are wanting to predict the count of homeless people, a dependent variable, by looking at multiple independent variables. The advantages of using a linear regression is that it gives information about the relevance of features and is simple to implyement and interpret. The disadvantages are that linear regression can be susceptible to overfitting. However, this can be fixed by reducing dimensions, which we attempt below. 
 
-Now that we have our data ready, it's finally time to put together the model. The model we chose to use is  Multivariate Regression Model, because we are wanting to predict homeless sheltered, unsheltered, and other counts for subsequent years. A Multivariate Regression will allow us to generate a continuous value for three dependent variables (sheltered, unsheltered, other) with more than one independent variable (state, year, total revenue, total expenditure, grades 9-12, and all grades). The benefit of using a Multivariate Regression is that we can get a more realistic picture than when just observing one dependent variable. This technique can also provide a more powerful test of significance than a typical multiple regression. A limitation of Multivariate analysis is that you need to have large datasets to overcome high standard errors. Our dataset may not be large enough to overcome this limitation.
+To determine how well the model is doing, we used four statistical measures: R Squared, Mean Absolute Error (MAE), Mean Squared Error (MSE), and Root Mean Squared Error (RSME). The R Squared value tells us goodness of fit; it measures the strength of the relationship between the model and the dependent variable. MAE tells us the absolute difference of the data and the model's predictions. The MSE is like the MAE except we are squaring the difference; this means that outliers will cause the error to grow quadratically instead of proportionally. Finally, the RMSE is the square root of MSE; taking the square root converts the metric back to similar units as the inputs. Outliers are still a big contributing factor to this error value.
 
-Looking at the results shown in the print(y_pred) cell output, we can see that we get an array containing arrays that contain three counts for each category. The results are given in scientific notation. We can see that the counts are in the thousands and ten thousands, which is not unexpected; many of our actual counts in the data are also in the thousands and ten thousands. Thus, at first glance we can see that our model is on the right track and is returning what we expect.
-
-To determine whether this model is actually a good fit using a statistical measure, we got the R-squared score which was 97.8%. This indicates a good fit. However, it may not be accurate, because our dataset might not be big enough to overcome the limitations of using a Multivariate regression model. Despite this limitation we decided to use this statistic, because R-squared shows the fraction of the variance between values predicted and the value rather than the mean of the actual. 
-
-The code containing the machine learning model is located in the Machine Learning folder in a file called machine_learning.ipynb.
-
-Model With Results & R_Squared Output:
+ We iterated through the machine learning model several times to try and get the best outcome by adding/removing features to see what the effect would be. For each attempt, the X features changed but the model code itself was the same:
 
 <img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/model.png"/>
 
+ #### Attempt 1: All Features
 
-### Step 5: Build Visualizations
+For our first attempt, we decided to include all the features, except State. Our results show an R Squared of 93.22%, an MAE of 20304.48, MSE of 995095019.37, and an RMSE of 31545.13.
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ml_all.png"/>
+
+This code can be viewed in machine_learning_final.ipynb file in the Machine Learning folder.
+
+#### Attempt 2: All Except Pre K
+
+For our second attempt, we decided to include all features, except State and GRADES_PK_G. This is because when looking at our graphs from the exploratory phase (see above), we can see that the GRADES_PK_G graph has values that deviate more from the line. For this attempt our results show an R Squared of 93.05%, an MAE of 20500.56, an MSE of 1019401083.26, and an RMSE of 31928.06.
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ml_prek.png"/>
+
+This code can be viewed in machine_learning_no_prek.ipynb file in the Machine Learning folder.
+
+#### Attempt 3: Only Total Expenditure and Total Revenue
+
+For our last attempt, we decided to only inlcude TOTAL_REVENUE and TOTAL_EXPENDITURE as the features. This is because from our exploratory graphs we saw that these two variables had the best looking relationship with Homeless_Count. For this attempt we got an R Squared of 78.97%, an MAE of 30281.50, and MSE of 3085178327.84, and an RMSE of 55544.38.
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ml_noedu.png"/>
+
+This code can be viewed in machine_learning_no_edu.ipynb file in the Machine Learning folder.
+
+#### Conclusion
+
+Based off the results from our three attempts it looks like the best outcome was our first attempt, including all features in the model. Although this was our best attempt, the outcome is still not very good. The MAE, MSE, and RMSE values are all very high, which indicates bad model performance. This could be due to too many zeroes in the data and/or many outliers. 
+
+
+### Step 6: Build Visualizations
 
 The last step is to visualize the data and the results. We decided to build our visualizations with Tableau Public and publish the results to Tableau Public server (linked above). The visualizations are sourced from the processed_education.csv and processed_homeless.csv files (located at Machine Learning > Resources). The two data sources are then joined via an inner join on State_Year.
 
