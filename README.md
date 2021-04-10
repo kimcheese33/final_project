@@ -88,7 +88,7 @@ To house our data, we built a database in Postgres. We created two tables: one t
 
 ERD:
 
-<pic>
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ERD.png"/>
 
 After we created our two tables, we knew that we wanted to join the data before feeding it to the machine learning model. For the join, we performed an inner join on the primary key column, State_Year, which is available in both tables. We stored this data in a table: homeless_edu.
 
