@@ -1,4 +1,4 @@
-# Final Project: Probing the Relationship Between Education and Homlessness in the USA
+# Probing the Relationship Between Education and Homlessness in the USA
 Authors: Kim Horany, Roy Mojica, Lawrence Watson
 
 ## Separation of Duties
