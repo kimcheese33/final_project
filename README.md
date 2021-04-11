@@ -102,7 +102,7 @@ To integrate the data from our Postgres database, we imported psycopg2 then used
 
 ### Step 3: Data Exploration
 
-In order to get a better idea of which features to include in our model, we first did a quick data exploration exercise. Due to the nature of our data and what we are hoping to achieve, we knew that we would be doing a linear regression. This means that we need to take a look at each variable and the relationship it has with Homeless_Count, our dependent variable. To do this, we used the Seaborn's pairplot to visualize the relationship. After looking at each variable, we can see that they all have a fairly weak relationship with Homeless_Count. However, it looks like TOTAL_EXPENDITURE and TOTAL_REVENUE have the best relationship. In Step 5, we will discuss how we came to our final model.
+In order to get a better idea of which features to include in our model, we first did a quick data exploration exercise. Due to the nature of our data and what we are hoping to achieve, we knew that we would be doing a linear regression. This means that we need to take a look at each variable and the relationship it has with Homeless_Count, our dependent variable. To do this, we used Seaborn's pairplot to visualize the relationship. After looking at each variable, we can see that they all have a fairly weak relationship with Homeless_Count. However, it looks like TOTAL_EXPENDITURE and TOTAL_REVENUE have the best relationship. In Step 5, we will discuss how we came to our final model.
 
 <img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/seaborn1.png"/>
 
