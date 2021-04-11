@@ -1,4 +1,4 @@
-# Final Project: Probing the Relationship Between Education and Homlessness in the USA
+# Probing the Relationship Between Education and Homlessness in the USA
 Authors: Kim Horany, Roy Mojica, Lawrence Watson
 
 ## Separation of Duties
@@ -8,22 +8,22 @@ Authors: Kim Horany, Roy Mojica, Lawrence Watson
 | --------- | ------------ | ------------ | ----------------- |
 |  1        | Presentation & Github | Machine Learning |   Database |
 |  2        | Machine Learning | Database |   Dashboard & Presentation |
-|  3        | Github | Presentation | Dashboard |
+|  3        | Github & Machine Learning | Presentation | Dashboard |
 
 
 ## Summary
 
-- Topic: Predicting the severity of homelessness in the United states and how it correlates with education by examining relationship between the two in each state. 
+- Topic: Predicting the severity of homelessness in the United states and how it correlates with education by examining relationship between the two. 
 
-- Why topic was selected: The swift and unexpected onset of a global health crisis in 2020 led many states to issue stay-at-home orders to curtail the rate of infection.  Without homes to retreat to, our homeless population was most vulnerable during the pandemic. We may not be able to predict or control the next devastating public health crisis, but is there an aspect to homelessness that we might govern to reduce the size of those affected? That is what we hope to discover.  With the focus on education, an area in which there is plenty of data, we hope to discove a method to make accurate projections on the number of homeless in a State.
+- Why topic was selected: The swift and unexpected onset of a global health crisis in 2020 led many states to issue stay-at-home orders to curtail the rate of infection.  Without homes to retreat to, our homeless population was most vulnerable during the pandemic. We may not be able to predict or control the next devastating public health crisis, but is there an aspect to homelessness that we might govern to reduce the size of those affected? That is what we hope to discover.  With the focus on education, an area in which there is plenty of data, we hope to discove a method to make accurate projections on the number of homeless
 
 ## Data Source
 
-We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2016_Homelessness_USA.csv, contains counts of homeless by state, Continuum of Care (CoC), and severity of homelessness. The second dataset, state_all.csv, contains education data such as, counts of individuals by state, year, grade level, and math/reading scores.
+We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2016_Homelessness_USA.csv, contains counts of homeless by state, Continuum of Care (CoC), and severity of homelessness. The second dataset, state_all.csv, contains education data such as, counts of individuals by state, year, grade level, and math/reading scores. Both raw datasets are stored here: Machine Learning > Resources > Raw
 
 ## Questions to Answer
 
-- What will the severity level of homelessness be next year?
+- What will homelessness counts increase or decrease in future years?
 
 - How does education level affect homelessness?
 
@@ -36,38 +36,17 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 ## Process
 
-### Segment 1
+### Step 1: Data Exploration & Cleaning
 
-#### Machine Learning Model
+Before diving into describing the Machine Learning model and the database, let's go over how we got the data ready for consumption. The code to do this is stored in the Machine Learning folder: clean_data.ipynb, preprocess_data.ipynb.
 
-1. Takes in data from the provisional database using the "ML_Model_Draft" file. Tested connection using "psycopg2 successfully with test postgres server created by Lawrence.
-
-2. Outputs counts we will use for "y" or label values for machine learning model.
-
-#### Database Integration
-
-1. Produce sample data that mimics the expected final database structure or schema:
-
-   - ERD for sample database was completed with the integration of our two primary datasets in mind (DB_structure.png).
-   - Created tables to house the DBs with querries in postgreSQL11 and exported the tables (Decade_Homelessness.sql & Education_by_state.sql).
-   - Drafted a list of suggested edits to our datasets for the preprocessing phase (DB_prospective_edits).
- 
-2. Confirm draft machine learning model is connected to the provisional database:
-
-   - Successfully connected provisional DB to the drafted model (ML_Model_Draft.ipynb) and took a picture of returned connection (database_connection.png).
-
-
-### Segment 2
-
-#### Machine Learning Model
-
-1. Description of preliminary data preprocessing:
+Description of preliminary data preprocessing:
 
    - Homeless Dataset
 
      - Read raw data from CSV
 
-     - Drop unneeded columns – we decided that the shelter name was not relevant to the data
+     - Drop unneeded columns – we decided that the shelter name (CoC) and the Measures column was not relevant to the data
 
      - Create a key column that will allow us to join to the education dataset
 
@@ -75,21 +54,15 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
        - Concatenate year with state, ex: 2007_AK
 
-     - Create bins for the Measures column to reduce the categories to either Sheltered, Unsheltered, or Other
+     - Group the data by State_Year, Year, State to aggregate the counts
 
-     - Drop original Measures column
-
-     - Group by State_Year, Year, State, Groups to aggregate the Count
-
-     - Flatten the table so that each year/state will have one record
-
-       - Create 3 columns: Sheltered_Cnt, Unsheltered_Cnt, Other_Cnt and store count under appropriate column
+     - Replace Nan values with 0
 
    - Education dataset
 
      - Read raw data from CSV
 
-     - Drop unneeded columns - columns with too many null values
+     - Drop unneeded columns - by checking null counts on the columns, we discovered these columns contained too many nulls: ENROLL, OTHER_EXPENDITURE, AVG_MATH_4_SCORE, AVG_MATH_8_SCORE, AVG_READING_4_SCORE, AVG_READING_8_SCORE. In addition, we decided to drop STATE_REVENUE, LOCAL_REVENUE, INSTRUCTION_EXPENDITURE, SUPPORT_SERVICES_EXPENDITURE, and CAPITAL_OUTLAY_EXPENDITURE to simplify the model and focus just on columns related to counts of students enrolled at school.
 
      - Create a key column that will allow us to join to homeless dataset
 
@@ -97,51 +70,92 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
        - Concatenate year with state, ex: 2007_AK
 
-     - Replace NaN with zeros
+     - Replace remaining NaN values with zeros
 
      - Convert floats to int
 
-       - Merged dataset
+Cleaned Homeless Data:
 
-     - Join homeless dataset and education dataset on the key: state_year
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/cleaned_homeless.png"/>
 
-     - Drop duplicate columns
+Cleaned Education Data:
 
-     - Reorder columns so the count columns are at the end
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/cleaned_education.png"/>
 
-     - Encode State column with get_dummies
+### Step 2: Build Database & Integrate 
 
-     - Use Standard Scaler on the X features
+To house our data, we built a database in Postgres. We created two tables: one to house the cleaned homeless data and the other to house the cleaned education data.
 
-2. Description of preliminary feature engineering and preliminary feature selection, including their decision making process:
+ERD:
 
-   - Preliminary feature engineering includes reducing the 20+ Measures categories to just 3 categories, scaling the features using Standard Scaler, and encoding the categorical column (State) using get_dummies. We chose the features to be the state, year, total state revenue, total state expenditure, number of students in high school, and number of students in all grades to be the features. We wanted to see if this combination of columns could be used to accurately predict homeless counts for subsequent years.
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ERD.png"/>
 
-3. Description of how data was split into training and testing sets:
+After we created our two tables, we knew that we wanted to join the data before feeding it to the machine learning model. For the join, we performed an inner join on the primary key column, State_Year, which is available in both tables. We stored this data in a table: homeless_edu.
 
-   - Data was split into training and testing sets using sklearn's train_test_split. We used the default split values.
+Join & Table Creation Statement (found in Database folder, querey.txt):
 
-4. Explanation of model choice, including limitations and benefits:
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/merge_join.png"/>
 
-   - We chose a multivariate multiple regression model, because we had more than two independent variables, more than one dependent variable, and we wanted to predict a continuous value. The benefits of multivariate regression is that we can get a more realistic picture than when just observing one dependent variable. This technique can also provide a more powerful test of significance than typical multiple regression. A limitation of multivariate analysis  is that you need to have large datasets to overcome high standard errors. Our dataset may not be large enough to overcome this limitation.
-   - To determine whether this model is a good fit, I got the R-squared score, which was 97.8%. This indicates a good fit. However, it may not be accurate, because our dataset might not be big enough to overcome the limitations of using a multivariate regression model. Despite this limitation we decided to use this statistic, because R-squared shows the fraction of the variance between values predicted and the value rather than the mean of the actual.
+To integrate the data from our Postgres database, we imported psycopg2 then used the following code, which can also be found in the Machine Learning folder at the top of the machine_learning_final.ipynb file:
 
-#### Database Intergration
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/connect_postgres.png"/>
 
-1. Database stores static data though the "db_creator.py" file by taking the CSV that were created from the data cleaning/processing file.
+### Step 3: Data Exploration
 
-2. Database interfaces with the project by connecting to the machine learning file using "psycopg2"
-   - Includes the tables for "homeless_processed" and "education_processed" CSVs.
-   - Created an INNER JOIN through Postgres and included the querey code in "querey.txt" file.
-   - Includes the SQLAlchemy connection string "db_creator.py"
- 
- 3. ERD is saved in the "homeless_erd.PNG" file.
+In order to get a better idea of which features to include in our model, we first did a quick data exploration exercise. Due to the nature of our data and what we are hoping to achieve, we knew that we would be doing a linear regression. This means that we need to take a look at each variable and the relationship it has with Homeless_Count, our dependent variable. To do this, we used the Seaborn's pairplot to visualize the relationship. After looking at each variable, we can see that they all have a fairly weak relationship with Homeless_Count. However, it looks like TOTAL_EXPENDITURE and TOTAL_REVENUE have the best relationship. In Step 5, we will discuss how we came to our final model.
 
-#### Dashboard
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/seaborn1.png"/>
 
-1. Dashboard created using Tableau Public.
-   - proccessed & joined data is exported to .csv format for connection to Tableau.
-      - Further manipulation of data required (calculated field may suffice) to collate state data into single column.
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/seaborn2.png"/>
+
+This code can be viewed in machine_learning_final.ipynb file in the Machine Learning folder.
+
+### Step 4: Feature Engineering & Splitting the Data
+
+Preliminary feature engineering included scaling the features using Standard Scaler. We also chose to drop State as this is a categorical variable that should not be included in the model. We chose the features for the final model to be the Year, TOTAL_REVENUE, TOTAL_EXPENDITURE, GRADES_PK_G,GRADES_KG_G,GRADES_4_G,GRADES_8_G,GRADES_12_G,GRADES_1_8_G,GRADES_9_12_G,GRADES_ALL_G columns to be the features. We wanted to see if this combination of columns could be used to accurately predict homeless counts for subsequent years. We also split the data into training and testing sets using sklearn's train_test_split. The code for this can be found in the Machine Learning folder in the machine_learning_final.ipynb file.
+
+### Step 5: Machine Learning Model
+
+Now that we have our data ready, it's finally time to put together the model. The model we chose to use is a Multiple Linear Regression Model. We chose this model, because we are wanting to predict the count of homeless people, a dependent variable, by looking at multiple independent variables. The advantages of using a linear regression is that it gives information about the relevance of features and is simple to implement and interpret. The disadvantages are that linear regression can be susceptible to overfitting. However, this can be fixed by reducing dimensions, which we attempt below. 
+
+To determine how well the model is doing, we used four statistical measures: R Squared, Mean Absolute Error (MAE), Mean Squared Error (MSE), and Root Mean Squared Error (RSME). The R Squared value tells us goodness of fit; it measures the strength of the relationship between the model and the dependent variable. MAE tells us the absolute difference of the data and the model's predictions. The MSE is like the MAE except we are squaring the difference; this means that outliers will cause the error to grow quadratically instead of proportionally. Finally, the RMSE is the square root of MSE; taking the square root converts the metric back to similar units as the inputs. Outliers are still a big contributing factor to this error value.
+
+ We iterated through the machine learning model several times to try and get the best outcome by adding/removing features to see what the effect would be. For each attempt, the X features changed but the model code itself was the same:
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/model.png"/>
+
+ #### Attempt 1: All Features
+
+For our first attempt, we decided to include all the features, except State. Our results show an R Squared of 93.22%, an MAE of 20304.48, MSE of 995095019.37, and an RMSE of 31545.13.
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ml_all.png"/>
+
+This code can be viewed in machine_learning_final.ipynb file in the Machine Learning folder.
+
+#### Attempt 2: All Except Pre K
+
+For our second attempt, we decided to include all features, except State and GRADES_PK_G. This is because when looking at our graphs from the exploratory phase (see above), we can see that the GRADES_PK_G graph has values that deviate more from the line. For this attempt our results show an R Squared of 93.05%, an MAE of 20500.56, an MSE of 1019401083.26, and an RMSE of 31928.06.
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ml_prek.png"/>
+
+This code can be viewed in machine_learning_no_prek.ipynb file in the Machine Learning folder.
+
+#### Attempt 3: Only Total Expenditure and Total Revenue
+
+For our last attempt, we decided to only inlcude TOTAL_REVENUE and TOTAL_EXPENDITURE as the features. This is because from our exploratory graphs we saw that these two variables had the best looking relationship with Homeless_Count. For this attempt we got an R Squared of 78.97%, an MAE of 30281.50, and MSE of 3085178327.84, and an RMSE of 55544.38.
+
+<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ml_noedu.png"/>
+
+This code can be viewed in machine_learning_no_edu.ipynb file in the Machine Learning folder.
+
+#### Conclusion
+
+Based off the results from our three attempts it looks like the best outcome was our first attempt, including all features in the model. Although this was our best attempt, the outcome is still not very good. The MAE, MSE, and RMSE values are all very high, which indicates bad model performance. This could be due to too many zeroes in the data and/or many outliers. 
+
+
+### Step 6: Build Visualizations
+
+The last step is to visualize the data and the results. We decided to build our visualizations with Tableau Public and publish the results to Tableau Public server (linked above). The visualizations are sourced from the processed_education.csv and processed_homeless.csv files (located at Machine Learning > Resources). The two data sources are then joined via an inner join on State_Year.
 
 2. Blueprint for vizualizations 
    - Bubble Chart
@@ -155,3 +169,6 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 3. Tableau Story, minus vizualizations, integrated into Google Slides presentation.
 
+## Conclusion
+
+While we were able to build a model that could make predictions on what homeless counts would be, the accuracy of this model deinitely  has room for improvement. In addition, it looks like we were unable to determine whether education has a direct impact on homelessness level in the US. In future attempts we could try to get a larger dataset, get different variables related to education (SAT scores, graduation rates, etc.), and/or prune the data more to reduce missing data (NaN's replaced by zeroes). 
