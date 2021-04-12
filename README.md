@@ -187,9 +187,9 @@ The last step is to visualize the model and the results. We decided to visualize
 
 Our model dashboard is located [here](https://app.neptune.ai/lwatson/homeless-edu/) (also linked in presentation materials. and is integrated into our slides presentation.
 
-The charts show that the more money and more enrolled in school results in more homeless. This likely can be explained by the more populous the state, the more homeless there are.
+The charts show that more money spent and more enrolled in school results in more homeless. This likely can be explained by the more populous the state, the more homeless there are.
 
 
 ## Conclusion
 
-While we were able to build a model that could make predictions on what homeless counts would be, the accuracy of this model deinitely  has room for improvement. In addition, it looks like we were unable to determine whether education has a direct impact on homelessness level in the US. In future attempts we could try to get a larger dataset, get different variables related to education (SAT scores, graduation rates, etc.), and/or prune the data more to reduce missing data (NaN's replaced by zeroes). 
+While we were able to build a model that could make predictions on what homeless counts would be, the accuracy of this model deinitely  has room for improvement. With our Machine Learning visualizations we were able to see that the more students enrolled at school, the more homeless there are in that state. However, this is more likely due to higher population in that state, rather than education itself. In future attempts we could improve our model by trying to get a larger dataset, get different variables related to education (SAT scores, graduation rates, etc.), and/or prune the data more to reduce missing data (NaN's replaced by zeroes). 
