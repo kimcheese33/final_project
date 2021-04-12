@@ -23,7 +23,7 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 ## Questions to Answer
 
-- What will homelessness counts increase or decrease in future years?
+- Will homelessness counts increase or decrease in future years?
 
 - How does education level affect homelessness?
 
