@@ -27,7 +27,7 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 - How does education level affect homelessness?
 
-## Presentation
+## Presentation & Visualizations
 
 [Google Slides Presentation](https://docs.google.com/presentation/d/1qcjNdUe6113w7axp-y-amXODMnWzwdU2P95df5-UpWs/edit?usp=sharing)
 
