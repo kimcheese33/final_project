@@ -107,7 +107,8 @@ To integrate the data from our Postgres database, we imported psycopg2 then used
 
 In order to get a better idea of which features to include in our model, we first did a quick data exploration exercise. 
 
-The processed data was connected to Tableau to make a few visualizations to familiarize ourselves with the data and search for any useful trends. 
+The processed data was connected to Tableau to make a few visualizations to familiarize ourselves with the data and search for any useful trends. The visualizations are sourced from the processed_education.csv and processed_homeless.csv files (located at Machine Learning > Resources). The two data sources are then joined via an inner join on State_Year.
+
    - Bubble Chart Viz
       - Values: Bubble - State, Size - sheltered homeless population, Color - total educational expenditure.
       - Description: Data occurs over 10 year period. Total homeless value as a percentage of State population is represented w/ dimensions of bubble labeled by State. Red gradient applied to bubble represents the total educational expenditure of the state ($25million-$1billion). Primary observation is that the states that spend the most on education have the largest homeless populations--however these states are also the most populous.
@@ -126,7 +127,7 @@ The processed data was connected to Tableau to make a few visualizations to fami
 
 <img src="https://github.com/kimcheese33/final_project/blob/watson/segment_3/Images/competing_%20line_graphs.png"/>
 
-Though, that our data was stable across all states over time, boded well for our machine learning model's predictive potential.
+Though, that our data was stable across all states over time, boded well for our machine learning model's predictive potential. 
 
 Due to the nature of our data and what we are hoping to achieve, we knew that we would be doing a linear regression. This means that we need to take a look at each variable and the relationship it has with Homeless_Count, our dependent variable. To do this, we used the Seaborn's pairplot to visualize the relationship. After looking at each variable, we can see that they all have a fairly weak relationship with Homeless_Count. However, it looks like TOTAL_EXPENDITURE and TOTAL_REVENUE have the best relationship. In Step 5, we will discuss how we came to our final model.
 
@@ -181,15 +182,10 @@ Based off the results from our three attempts it looks like the best outcome was
 
 ### Step 6: Machine Learning Model Visualizations
 
-The last step is to visualize the data and the results. We decided to build our visualizations with Tableau Public and publish the results to Tableau Public server (linked above). The visualizations are sourced from the processed_education.csv and processed_homeless.csv files (located at Machine Learning > Resources). The two data sources are then joined via an inner join on State_Year.
+The last step is to visualize the model and the results. We decided to visualize our machine learning model with Neptune AI's model regitry because of the interactivity allowed when manipulating terms of the model runs.
 
-2. Blueprint for visualizations 
-   - Bubble Chart
-      - Values: Y - Total Expenditure (10 year period), X - Grades All (10 year period), Bubble - Total Homeless per State
-      - Description: Total homeless value as a percentage of State population is represented w/ dimensions of bubble labeled by State. Bubbles are plotted on a graph that shows how much money was spent on education and the aggregate k-12 grades. Will help identify which states are spending the most on education and whether or not it has an impact on the homeless population.
-    - Heat Maps
-         - Values: X -Years, Y - States, Heat Value - Total Homeless
-         - Description: A heat map to display the homeless population in each state for every year 2007-2016. If a state's homeless population is trending downward over time, it will be represented.
+Our model dashboard is located [here](https://app.neptune.ai/lwatson/homeless-edu/) (also linked in presentation materials. and is integrated into our slides presentation.
+
 
 ## Conclusion
 
