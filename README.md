@@ -187,6 +187,8 @@ The last step is to visualize the model and the results. We decided to visualize
 
 Our model dashboard is located [here](https://app.neptune.ai/lwatson/homeless-edu/) (also linked in presentation materials. and is integrated into our slides presentation.
 
+The charts show that the more money and more enrolled in school results in more homeless. This likely can be explained by the more populous the state, the more homeless there are.
+
 
 ## Conclusion
 
