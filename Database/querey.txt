@@ -14,4 +14,4 @@ SELECT "e"."State_Year", "e"."TOTAL_REVENUE", "e"."TOTAL_EXPENDITURE", "e"."GRAD
 "e"."GRADES_1_8_G","e"."GRADES_9_12_G", "e"."GRADES_ALL_G", 
 "h"."Year", "h"."State", "h"."Sheltered_Cnt", "h"."Unsheltered_Cnt", "h"."Other_Cnt"
 FROM education AS e
-INNER JOIN homeless AS h USING ("State_Year")
+INNER JOIN homeless AS h USING ("State_Year");
