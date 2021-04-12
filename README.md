@@ -1,4 +1,4 @@
-# Probing the Relationship Between Education and Homlessness in the USA
+# Probing the Relationship Between Education and Homelessness in the USA
 Authors: Kim Horany, Roy Mojica, Lawrence Watson
 
 ## Separation of Duties
@@ -13,7 +13,7 @@ Authors: Kim Horany, Roy Mojica, Lawrence Watson
 
 ## Summary
 
-- Topic: Predicting the severity of homelessness in the United states and how it correlates with education by examining relationship between the two. 
+- Topic: Predicting the severity of homelessness in the United states and how it correlates with education by examining the relationship between the two. 
 
 - Why topic was selected: The swift and unexpected onset of a global health crisis in 2020 led many states to issue stay-at-home orders to curtail the rate of infection.  Without homes to retreat to, our homeless population was most vulnerable during the pandemic. We may not be able to predict or control the next devastating public health crisis, but is there an aspect to homelessness that we might govern to reduce the size of those affected? That is what we hope to discover.  With the focus on education, an area in which there is plenty of data, we hope to discove a method to make accurate projections on the number of homeless
 
@@ -32,13 +32,16 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 [Google Slides Presentation](https://docs.google.com/presentation/d/1qcjNdUe6113w7axp-y-amXODMnWzwdU2P95df5-UpWs/edit?usp=sharing)
 
 
-[Dashboard Link](https://public.tableau.com/profile/lawrence.watson#!/vizhome/FinalProject-HomlessnessEducationintheUSA/HomelessnessEduDash?publish=yes)
+[Tableau Dashboard Link](https://public.tableau.com/profile/lawrence.watson#!/vizhome/FinalProject-HomlessnessEducationintheUSA/HomelessnessEduDash?publish=yes)
+
+[Neptune ML Visualizer](https://app.neptune.ai/lwatson/homeless-edu/)
+
 
 ## Process
 
 ### Step 1: Data Exploration & Cleaning
 
-Before diving into describing the Machine Learning model and the database, let's go over how we got the data ready for consumption. The code to do this is stored in the Machine Learning folder: clean_data.ipynb, preprocess_data.ipynb.
+Before diving into describing the Machine Learning model and the database, lets go over how we got the data ready for consumption. The code to do this is stored in the Machine Learning folder: clean_data.ipynb, preprocess_data.ipynb.
 
 Description of preliminary data preprocessing:
 
@@ -102,7 +105,32 @@ To integrate the data from our Postgres database, we imported psycopg2 then used
 
 ### Step 3: Data Exploration
 
-In order to get a better idea of which features to include in our model, we first did a quick data exploration exercise. Due to the nature of our data and what we are hoping to achieve, we knew that we would be doing a linear regression. This means that we need to take a look at each variable and the relationship it has with Homeless_Count, our dependent variable. To do this, we used Seaborn's pairplot to visualize the relationship. After looking at each variable, we can see that they all have a fairly weak relationship with Homeless_Count. However, it looks like TOTAL_EXPENDITURE and TOTAL_REVENUE have the best relationship. In Step 5, we will discuss how we came to our final model.
+In order to get a better idea of which features to include in our model, we first did a quick data exploration exercise. 
+
+The processed data was connected to Tableau to make a few visualizations to familiarize ourselves with the data and search for any useful trends. The visualizations are sourced from the processed_education.csv and processed_homeless.csv files (located at Machine Learning > Resources). The two data sources are then joined via an inner join on State_Year.
+
+   - Bubble Chart Viz
+      - Values: Bubble - State, Size - sheltered homeless population, Color - total educational expenditure.
+      - Description: Data occurs over 10 year period. Total homeless value as a percentage of State population is represented w/ dimensions of bubble labeled by State. Red gradient applied to bubble represents the total educational expenditure of the state ($25million-$1billion). Primary observation is that the states that spend the most on education have the largest homeless populations--however these states are also the most populous.
+
+<img src="https://github.com/kimcheese33/final_project/blob/watson/segment_3/Images/bubble_chart.png"/>
+
+   - Decade Heat Map Viz
+         - Values: X -Years, Y - States, Heat Value - Sheltered Homeless
+         - Description: A heat map to display the homeless population in each state for every year 2007-2016. Essentially we're running the same information form the last visualization but with each year of the decade represented by its own color value. The purpose is to see if there any state made progress over time w/ diminishing its homelessness numbers. There were no states that made an obvious trend downward with its numbers. Most maintained steady, unwavering numbers. 
+        
+<img src="https://github.com/kimcheese33/final_project/blob/watson/segment_3/Images/state_heat_over_time.png"/>
+
+- Enrolled v. Sheltered Line Viz 
+         - Values: X - Years, Y - Sheltered Homeless, Enrolled Grade School Students, Segmented by State 
+         - Description: Testing another educational value from our data set, we mapped sheltered homeless numbers against k-12 student enrollment numbers from each state over the ten year period. Again, little was gleaned. As the number of students rose so did the homeless population. No state had a trend that performed differently. 
+
+<img src="https://github.com/kimcheese33/final_project/blob/watson/segment_3/Images/competing_%20line_graphs.png"/>
+
+Though, that our data was stable across all states over time, boded well for our machine learning model's predictive potential. 
+
+Due to the nature of our data and what we are hoping to achieve, we knew that we would be doing a linear regression. This means that we need to take a look at each variable and the relationship it has with Homeless_Count, our dependent variable. To do this, we used the Seaborn's pairplot to visualize the relationship. After looking at each variable, we can see that they all have a fairly weak relationship with Homeless_Count. However, it looks like TOTAL_EXPENDITURE and TOTAL_REVENUE have the best relationship. In Step 5, we will discuss how we came to our final model.
+
 
 <img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/seaborn1.png"/>
 
@@ -142,7 +170,7 @@ This code can be viewed in machine_learning_no_prek.ipynb file in the Machine Le
 
 #### Attempt 3: Only Total Expenditure and Total Revenue
 
-For our last attempt, we decided to only inlcude TOTAL_REVENUE and TOTAL_EXPENDITURE as the features. This is because from our exploratory graphs we saw that these two variables had the best looking relationship with Homeless_Count. For this attempt we got an R Squared of 78.97%, an MAE of 30281.50, and MSE of 3085178327.84, and an RMSE of 55544.38.
+For our last attempt, we decided to only include TOTAL_REVENUE and TOTAL_EXPENDITURE as the features. This is because from our exploratory graphs we saw that these two variables had the best looking relationship with Homeless_Count. For this attempt we got an R Squared of 78.97%, an MAE of 30281.50, and MSE of 3085178327.84, and an RMSE of 55544.38.
 
 <img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ml_noedu.png"/>
 
@@ -153,21 +181,12 @@ This code can be viewed in machine_learning_no_edu.ipynb file in the Machine Lea
 Based off the results from our three attempts it looks like the best outcome was our first attempt, including all features in the model. Although this was our best attempt, the outcome is still not very good. The MAE, MSE, and RMSE values are all very high, which indicates bad model performance. This could be due to too many zeroes in the data and/or many outliers. 
 
 
-### Step 6: Build Visualizations
+### Step 6: Machine Learning Model Visualizations
 
-The last step is to visualize the data and the results. We decided to build our visualizations with Tableau Public and publish the results to Tableau Public server (linked above). The visualizations are sourced from the processed_education.csv and processed_homeless.csv files (located at Machine Learning > Resources). The two data sources are then joined via an inner join on State_Year.
+The last step is to visualize the model and the results. We decided to visualize our machine learning model with Neptune AI's model regitry because of the interactivity allowed when manipulating terms of the model runs.
 
-2. Blueprint for vizualizations 
-   - Bubble Chart
-      - Values: Y - Total Expenditure (10 year period), X - Grades All (10 year period), Bubble - Total Homeless per State
-      - Description: Total homeless value as a percentage of State population is represented w/ dimensions of bubble labeled by State. Bubbles are plotted on a graph that shows how much money was spent on education and the aggregate k-12 grades. Will help identify which states are spending the most on education and whether or not it has an impact on the homeless population.
-    - Heat Maps
-         - Values: X -Years, Y - States, Heat Value - Total Homeless
-         - Description: A heat map to display the homeless population in each state for every year 2007-2016. If a state's homeless population is trending downward over time, it will be represented.
-    - Interactive Element
-         - Description: Map of the United States displaying where each state is colored with a heat value to represent either Homelessness, Educational Spending, or k-12 grade performance. A button will be used to select between the three values. A slider at the map's edge will be used to select the year 2006-2017.
+Our model dashboard is located [here](https://app.neptune.ai/lwatson/homeless-edu/) (also linked in presentation materials. and is integrated into our slides presentation.
 
-3. Tableau Story, minus vizualizations, integrated into Google Slides presentation.
 
 ## Conclusion
 
