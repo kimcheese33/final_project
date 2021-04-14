@@ -1,16 +1,6 @@
 # Probing the Relationship Between Education and Homelessness in the USA
 Authors: Kim Horany, Roy Mojica, Lawrence Watson
 
-## Separation of Duties
-
-
-|  Segment  |  Kim Horany  |  Roy Mojica  |  Lawrence Watson  |
-| --------- | ------------ | ------------ | ----------------- |
-|  1        | Presentation & Github | Machine Learning |   Database |
-|  2        | Machine Learning | Database |   Dashboard & Presentation |
-|  3        | Github & Machine Learning | Presentation | Dashboard |
-
-
 ## Summary
 
 - Topic: Predicting the severity of homelessness in the United states and how it correlates with education by examining the relationship between the two. 
@@ -41,7 +31,7 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 ### Step 1: Data Exploration & Cleaning
 
-Before diving into describing the Machine Learning model and the database, lets go over how we got the data ready for consumption. The code to do this is stored in the Machine Learning folder: clean_data.ipynb, preprocess_data.ipynb.
+Before diving into describing the Machine Learning model and the database, lets go over how we got the data ready for consumption. The code to do this is stored in the Machine Learning folder: clean_data.ipynb, preprocess_data.ipynb. 
 
 Description of preliminary data preprocessing:
 
@@ -63,9 +53,9 @@ Description of preliminary data preprocessing:
 
    - Education dataset
 
-     - Read raw data from CSV
+     - Read raw data from CSV 
 
-     - Drop unneeded columns - by checking null counts on the columns, we discovered these columns contained too many nulls: ENROLL, OTHER_EXPENDITURE, AVG_MATH_4_SCORE, AVG_MATH_8_SCORE, AVG_READING_4_SCORE, AVG_READING_8_SCORE. In addition, we decided to drop STATE_REVENUE, LOCAL_REVENUE, INSTRUCTION_EXPENDITURE, SUPPORT_SERVICES_EXPENDITURE, and CAPITAL_OUTLAY_EXPENDITURE to simplify the model and focus just on columns related to counts of students enrolled at school.
+     - Drop unneeded columns - by checking null counts on the columns, we discovered these columns contained too many nulls: ENROLL, OTHER_EXPENDITURE, AVG_MATH_4_SCORE, AVG_MATH_8_SCORE, AVG_READING_4_SCORE, AVG_READING_8_SCORE. In addition, we decided to drop STATE_REVENUE, LOCAL_REVENUE, INSTRUCTION_EXPENDITURE, SUPPORT_SERVICES_EXPENDITURE, and CAPITAL_OUTLAY_EXPENDITURE to simplify the model and focus just on columns related to counts of students enrolled at school. 
 
      - Create a key column that will allow us to join to homeless dataset
 
@@ -107,7 +97,7 @@ To integrate the data from our Postgres database, we imported psycopg2 then used
 
 In order to get a better idea of which features to include in our model, we first did a quick data exploration exercise. 
 
-The processed data was connected to Tableau to make a few visualizations to familiarize ourselves with the data and search for any useful trends. The visualizations are sourced from the processed_education.csv and processed_homeless.csv files (located at Machine Learning > Resources). The two data sources are then joined via an inner join on State_Year.
+The processed data was connected to Tableau to make a few visualizations to familiarize ourselves with the data and search for any useful trends. The visualizations are sourced from the processed_education.csv and processed_homeless.csv files (located at Machine Learning > Resources). The two data sources are then joined via an inner join on State_Year. 
 
    - Bubble Chart Viz
       - Values: Bubble - State, Size - sheltered homeless population, Color - total educational expenditure.
