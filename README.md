@@ -1,16 +1,6 @@
 # Probing the Relationship Between Education and Homelessness in the USA
 Authors: Kim Horany, Roy Mojica, Lawrence Watson
 
-## Separation of Duties
-
-
-|  Segment  |  Kim Horany  |  Roy Mojica  |  Lawrence Watson  |
-| --------- | ------------ | ------------ | ----------------- |
-|  1        | Presentation & Github | Machine Learning |   Database |
-|  2        | Machine Learning | Database |   Dashboard & Presentation |
-|  3        | Github & Machine Learning | Presentation | Dashboard |
-
-
 ## Summary
 
 - Topic: Predicting the severity of homelessness in the United states and how it correlates with education by examining the relationship between the two. 
