@@ -31,7 +31,7 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 ### Step 1: Data Exploration & Cleaning
 
-Before diving into describing the Machine Learning model and the database, lets go over how we got the data ready for consumption. The code to do this is stored in the Machine Learning folder: clean_data.ipynb, preprocess_data.ipynb.
+Before diving into describing the Machine Learning model and the database, lets go over how we got the data ready for consumption. The code to do this is stored in the Machine Learning folder: clean_data.ipynb, preprocess_data.ipynb. 
 
 Description of preliminary data preprocessing:
 
