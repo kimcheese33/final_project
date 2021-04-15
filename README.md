@@ -130,7 +130,7 @@ This code can be viewed in machine_learning_final.ipynb file in the Machine Lear
 
 ### Step 4: Feature Engineering & Splitting the Data
 
-Preliminary feature engineering included scaling the features using Standard Scaler. We also chose to drop State as this is a categorical variable that should not be included in the model. We chose the features for the final model to be the Year, TOTAL_REVENUE, TOTAL_EXPENDITURE, GRADES_PK_G,GRADES_KG_G,GRADES_4_G,GRADES_8_G,GRADES_12_G,GRADES_1_8_G,GRADES_9_12_G,GRADES_ALL_G columns to be the features. We wanted to see if this combination of columns could be used to accurately predict homeless counts for subsequent years. We also split the data into training and testing sets using sklearn's train_test_split. The code for this can be found in the Machine Learning folder in the machine_learning_final.ipynb file.
+Preliminary feature engineering included scaling the features using Standard Scaler. We also chose to drop State as this is a categorical variable that should not be included in the model. We chose the features for the final model to be the Year, TOTAL_REVENUE, TOTAL_EXPENDITURE, GRADES_PK_G,GRADES_KG_G,GRADES_4_G,GRADES_8_G,GRADES_12_G,GRADES_1_8_G,GRADES_9_12_G,GRADES_ALL_G columns to be the features. We wanted to see if this combination of columns could be used to accurately predict homeless counts for subsequent years. We also split the data into training and testing sets using sklearn's train_test_split. Then we split the Year and State data manually: first 75% of rows is the training set and the remaining 25% is the testing set. The code for this can be found in the Machine Learning folder in the machine_learning_final.ipynb file.
 
 ### Step 5: Machine Learning Model
 
