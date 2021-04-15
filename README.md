@@ -69,11 +69,11 @@ Description of preliminary data preprocessing:
 
 Cleaned Homeless Data:
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/cleaned_homeless.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/cleaned_homeless.png"/>
 
 Cleaned Education Data:
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/cleaned_education.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/cleaned_education.png"/>
 
 ### Step 2: Build Database & Integrate 
 
@@ -81,17 +81,17 @@ To house our data, we built a database in Postgres. We created two tables: one t
 
 ERD:
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ERD.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/ERD.png"/>
 
 After we created our two tables, we knew that we wanted to join the data before feeding it to the machine learning model. For the join, we performed an inner join on the primary key column, State_Year, which is available in both tables. We stored this data in a table: homeless_edu.
 
 Join & Table Creation Statement (found in Database folder, querey.txt):
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/merge_join.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/merge_join.png"/>
 
 To integrate the data from our Postgres database, we imported psycopg2 then used the following code, which can also be found in the Machine Learning folder at the top of the machine_learning_final.ipynb file:
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/connect_postgres.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/connect_postgres.png"/>
 
 ### Step 3: Data Exploration
 
@@ -103,28 +103,28 @@ The processed data was connected to Tableau to make a few visualizations to fami
       - Values: Bubble - State, Size - sheltered homeless population, Color - total educational expenditure.
       - Description: Data occurs over 10 year period. Total homeless value as a percentage of State population is represented w/ dimensions of bubble labeled by State. Red gradient applied to bubble represents the total educational expenditure of the state ($25million-$1billion). Primary observation is that the states that spend the most on education have the largest homeless populations--however these states are also the most populous.
 
-<img src="https://github.com/kimcheese33/final_project/blob/watson/segment_3/Images/bubble_chart.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/bubble_chart.png"/>
 
    - Decade Heat Map Viz
          - Values: X -Years, Y - States, Heat Value - Sheltered Homeless
          - Description: A heat map to display the homeless population in each state for every year 2007-2016. Essentially we're running the same information form the last visualization but with each year of the decade represented by its own color value. The purpose is to see if there any state made progress over time w/ diminishing its homelessness numbers. There were no states that made an obvious trend downward with its numbers. Most maintained steady, unwavering numbers. 
         
-<img src="https://github.com/kimcheese33/final_project/blob/watson/segment_3/Images/state_heat_over_time.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/state_heat_over_time.png"/>
 
 - Enrolled v. Sheltered Line Viz 
          - Values: X - Years, Y - Sheltered Homeless, Enrolled Grade School Students, Segmented by State 
          - Description: Testing another educational value from our data set, we mapped sheltered homeless numbers against k-12 student enrollment numbers from each state over the ten year period. Again, little was gleaned. As the number of students rose so did the homeless population. No state had a trend that performed differently. 
 
-<img src="https://github.com/kimcheese33/final_project/blob/watson/segment_3/Images/competing_%20line_graphs.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/competing_%20line_graphs.png"/>
 
 Though, that our data was stable across all states over time, boded well for our machine learning model's predictive potential. 
 
 Due to the nature of our data and what we are hoping to achieve, we knew that we would be doing a linear regression. This means that we need to take a look at each variable and the relationship it has with Homeless_Count, our dependent variable. To do this, we used the Seaborn's pairplot to visualize the relationship. After looking at each variable, we can see that they all have a fairly weak relationship with Homeless_Count. However, it looks like TOTAL_EXPENDITURE and TOTAL_REVENUE have the best relationship. In Step 5, we will discuss how we came to our final model.
 
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/seaborn1.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/seaborn1.png"/>
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/seaborn2.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/seaborn2.png"/>
 
 This code can be viewed in machine_learning_final.ipynb file in the Machine Learning folder.
 
@@ -140,13 +140,13 @@ To determine how well the model is doing, we used four statistical measures: R S
 
  We iterated through the machine learning model several times to try and get the best outcome by adding/removing features to see what the effect would be. For each attempt, the X features changed but the model code itself was the same:
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/model.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/model.png"/>
 
  #### Attempt 1: All Features
 
 For our first attempt, we decided to include all the features, except State. Our results show an R Squared of 93.22%, an MAE of 20304.48, MSE of 995095019.37, and an RMSE of 31545.13.
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ml_all.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/ml_all.png"/>
 
 This code can be viewed in machine_learning_final.ipynb file in the Machine Learning folder.
 
@@ -154,7 +154,7 @@ This code can be viewed in machine_learning_final.ipynb file in the Machine Lear
 
 For our second attempt, we decided to include all features, except State and GRADES_PK_G. This is because when looking at our graphs from the exploratory phase (see above), we can see that the GRADES_PK_G graph has values that deviate more from the line. For this attempt our results show an R Squared of 93.05%, an MAE of 20500.56, an MSE of 1019401083.26, and an RMSE of 31928.06.
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ml_prek.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/ml_prek.png"/>
 
 This code can be viewed in machine_learning_no_prek.ipynb file in the Machine Learning folder.
 
@@ -162,7 +162,7 @@ This code can be viewed in machine_learning_no_prek.ipynb file in the Machine Le
 
 For our last attempt, we decided to only include TOTAL_REVENUE and TOTAL_EXPENDITURE as the features. This is because from our exploratory graphs we saw that these two variables had the best looking relationship with Homeless_Count. For this attempt we got an R Squared of 78.97%, an MAE of 30281.50, and MSE of 3085178327.84, and an RMSE of 55544.38.
 
-<img src="https://github.com/kimcheese33/final_project/blob/horany/segment_3/Images/ml_noedu.png"/>
+<img src="https://github.com/kimcheese33/final_project/blob/main/Images/ml_noedu.png"/>
 
 This code can be viewed in machine_learning_no_edu.ipynb file in the Machine Learning folder.
 
