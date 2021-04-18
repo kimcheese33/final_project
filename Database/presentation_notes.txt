@@ -1,3 +1,7 @@
 Slides to Present:
 Intro, Project Overview (3-7), Postgres Database Integration (13-14)
 
+For Slide 5: 
+Keep in mind that the homeless data is gathered manually and is basically estimated 
+So we expect some margin of error due to this
+
