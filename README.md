@@ -121,6 +121,8 @@ Though, that our data was stable across all states over time, boded well for our
          - Values: Total Homeless, Enrolled Students, Educational Expenditure, States, Years
          - Description: An overview map of the United States that allows us to compare the values of multiple fields against each other. One or many states and/or years can be selected to view the total homeless, enrolled student, and educational expenditure values in the chosen range. Using the map is a quick way to check the data on any of our identified patterns.
 
+<img src="https://github.com/kimcheese33/final_project/blob/watson/segment_4/Images/data_map.png">
+
 Due to the nature of our data and what we are hoping to achieve, we knew that we would be doing a linear regression. This means that we need to take a look at each variable and the relationship it has with Homeless_Count, our dependent variable. To do this, we used the Seaborn's pairplot to visualize the relationship. After looking at each variable, we can see that they all have a fairly weak relationship with Homeless_Count. However, it looks like TOTAL_EXPENDITURE and TOTAL_REVENUE have the best relationship. In Step 5, we will discuss how we came to our final model.
 
 
