@@ -24,8 +24,6 @@ We are using two CSVs which we pulled from Kaggle.com. The first dataset, 2007-2
 
 [Tableau Dashboard Link](https://public.tableau.com/profile/lawrence.watson#!/vizhome/FinalProject-HomlessnessEducationintheUSA/HomelessnessEduDash?publish=yes)
 
-[Neptune ML Visualizer](https://app.neptune.ai/lwatson/homeless-edu/)
-
 
 ## Process
 
@@ -166,19 +164,9 @@ For our last attempt, we decided to only include TOTAL_REVENUE and TOTAL_EXPENDI
 
 This code can be viewed in machine_learning_no_edu.ipynb file in the Machine Learning folder.
 
-#### Conclusion
+#### Model Analysis
 
 Based off the results from our three attempts it looks like the best outcome was our first attempt, including all features in the model. Although this was our best attempt, the outcome is still not very good. The MAE, MSE, and RMSE values are all very high, which indicates bad model performance. This could be due to too many zeroes in the data and/or many outliers. 
-
-
-### Step 6: Machine Learning Model Visualizations
-
-The last step is to visualize the model and the results. We decided to visualize our machine learning model with Neptune AI's model regitry because of the interactivity allowed when manipulating terms of the model runs.
-
-Our model dashboard is located [here](https://app.neptune.ai/lwatson/homeless-edu/) (also linked in presentation materials. and is integrated into our slides presentation.
-
-The charts show that more money spent and more enrolled in school results in more homeless. This likely can be explained by the more populous the state, the more homeless there are.
-
 
 ## Conclusion
 
